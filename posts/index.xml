@@ -12,20 +12,20 @@
     
     <item>
       <title>ping 1.1 is the fastest ping</title>
-      <link>https://thisisbinh.me/posts/ping-1.1/</link>
+      <link>https://thisisbinh.me/ping-1.1/</link>
       <pubDate>Sun, 01 Apr 2018 10:09:59 -0700</pubDate>
       
-      <guid>https://thisisbinh.me/posts/ping-1.1/</guid>
+      <guid>https://thisisbinh.me/ping-1.1/</guid>
       <description>Today seems like a good day to announce something, start something, or just do anything a bit more &amp;ldquo;unusual&amp;rdquo;. So I decided to start writing for this forgotten blog. Also, a certain company is also launching something with a lot of 1 too. And while reading the news around it, a little command surprised me:
 $ ping 1.1 PING 1.1 (1.0.0.1): 56 data bytes 64 bytes from 1.0.0.1: icmp_seq=0 ttl=55 time=5.</description>
     </item>
     
     <item>
       <title>Initial Post</title>
-      <link>https://thisisbinh.me/posts/initial-post/</link>
+      <link>https://thisisbinh.me/initial-post/</link>
       <pubDate>Sat, 18 Nov 2017 11:02:28 +0800</pubDate>
       
-      <guid>https://thisisbinh.me/posts/initial-post/</guid>
+      <guid>https://thisisbinh.me/initial-post/</guid>
       <description>git init git add . git commit -m &amp;#39;Initial commit&amp;#39; It&amp;rsquo;s a new Hello World.</description>
     </item>
     
