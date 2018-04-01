@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Hi, This Is Binh.</title>
+    <title>Posts on Hi, this is Binh.</title>
     <link>https://thisisbinh.me/posts/</link>
-    <description>Recent content in Posts on Hi, This Is Binh.</description>
+    <description>Recent content in Posts on Hi, this is Binh.</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 18 Nov 2017 11:02:28 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 01 Apr 2018 10:09:59 -0700</lastBuildDate>
     
 	<atom:link href="https://thisisbinh.me/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ping 1.1 is the fastest ping</title>
+      <link>https://thisisbinh.me/posts/ping-1.1/</link>
+      <pubDate>Sun, 01 Apr 2018 10:09:59 -0700</pubDate>
+      
+      <guid>https://thisisbinh.me/posts/ping-1.1/</guid>
+      <description>Today seems like a good day to announce something, start something, or just do anything a bit more &amp;ldquo;unusual&amp;rdquo;. So I decided to start writing for this forgotten blog. Also, some company also launching something with a lot of 1 too. And while reading news around it, a little command surprised me:
+$ ping 1.1 PING 1.1 (1.0.0.1): 56 data bytes 64 bytes from 1.0.0.1: icmp_seq=0 ttl=55 time=5.586 ms 64 bytes from 1.</description>
+    </item>
     
     <item>
       <title>Initial Post</title>
