@@ -5,27 +5,37 @@
     <link>https://thisisbinh.me/</link>
     <description>Recent content in Home on Hi, this is Binh.</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 01 Apr 2018 10:09:59 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 09 Oct 2018 18:56:49 +0700</lastBuildDate>
     
 	<atom:link href="https://thisisbinh.me/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Bản đồ mật đồ dân số Việt Nam</title>
+      <link>https://thisisbinh.me/posts/vietnam-choropleth-map/</link>
+      <pubDate>Tue, 09 Oct 2018 18:56:49 +0700</pubDate>
+      
+      <guid>https://thisisbinh.me/posts/vietnam-choropleth-map/</guid>
+      <description>Ghi chú lại quá trình tạo ra một choropleth map của mật độ dân số Việt Nam từ hướng dẫn Command-Line Cartography của Mike Bostock. Ghi chú này vốn là một Jupyter notebook.
+Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong đó các khu vực được tô màu hay đánh dấu tương ứng với một giá trị nào đó, ví dụ như là mật độ dân số.</description>
+    </item>
+    
+    <item>
       <title>ping 1.1 is the fastest ping</title>
-      <link>https://thisisbinh.me/ping-1.1/</link>
+      <link>https://thisisbinh.me/posts/ping-1.1/</link>
       <pubDate>Sun, 01 Apr 2018 10:09:59 -0700</pubDate>
       
-      <guid>https://thisisbinh.me/ping-1.1/</guid>
-      <description>Today seems like a good day to announce something, start something, or just do anything a bit more &amp;ldquo;unusual&amp;rdquo;. So I decided to start writing for this forgotten blog. Also, a certain company is also launching something with a lot of 1 too. And while reading the news around it, a little command surprised me:
-$ ping 1.1 PING 1.1 (1.0.0.1): 56 data bytes 64 bytes from 1.0.0.1: icmp_seq=0 ttl=55 time=5.</description>
+      <guid>https://thisisbinh.me/posts/ping-1.1/</guid>
+      <description>Today seems like a good day to announce something, start something, or just do anything a bit more &amp;ldquo;unusual&amp;rdquo;. So I decided to start writing for this forgotten blog. Also, some company also launching something with a lot of 1 too. And while reading news around it, a little command surprised me:
+$ ping 1.1 PING 1.1 (1.0.0.1): 56 data bytes 64 bytes from 1.0.0.1: icmp_seq=0 ttl=55 time=5.586 ms 64 bytes from 1.</description>
     </item>
     
     <item>
       <title>Initial Post</title>
-      <link>https://thisisbinh.me/initial-post/</link>
+      <link>https://thisisbinh.me/posts/initial-post/</link>
       <pubDate>Sat, 18 Nov 2017 11:02:28 +0800</pubDate>
       
-      <guid>https://thisisbinh.me/initial-post/</guid>
+      <guid>https://thisisbinh.me/posts/initial-post/</guid>
       <description>git init git add . git commit -m &amp;#39;Initial commit&amp;#39; It&amp;rsquo;s a new Hello World.</description>
     </item>
     
