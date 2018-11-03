@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Vietnam Choropleth Map Generator</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Fira+Sans+Extra+Condensed" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style type="text/css">
+        body {
+            font-family: "Roboto", "Helvetica Neue", sans-serif;
+            font-size: 15px;
+        }
+        h3 {
+            font-family: "Fira Sans Extra Condensed", "Helvetica Neue", sans-serif;
+        }
+        .vg-tooltip.custom-theme {
+            font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+            font-size: 14px !important;
+        }
+
+        .scheme svg {
+            width: 190px;
+            height: 15px;
+            border: 1px solid #ddd;
+        }
+
+        span.color-block {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        .sidebar {
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container-fluid">
+    <div class="d-md-none py-2">
+        <h3>Tạo bản đồ Việt Nam</h3>
+        <p>
+            Tạo choropleth map với các tỉnh thành Việt Nam.
+            <a href="gallery.html">Xem ví dụ</a>.
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-8 p-3 order-md-2 text-center">
+            <div id="map">loading...</div>
+        </div>
+        <div class="col-md-4 order-md-1 bg-light py-3 sidebar">
+            <div class="d-none d-md-block">
+                <h3>Tạo bản đồ Việt Nam</h3>
+                <p>
+                    Công cụ tạo choropleth map với các tỉnh thành Việt Nam.
+                    <a href="gallery.html">Xem ví dụ</a>.
+                </p>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="title">Tiêu đề</label>
+                    <input type="text" class="form-control" id="title" v-model="title" placeholder="Tiêu đề bản đồ">
+                </div>
+                <div class="form-group">
+                    <label for="inputData">Số liệu (định dạng CSV/TSV)</label>
+                    <!--
+                    <div class="float-right">
+                        <a href="#">Tạo ngẫu nhiên</a>
+                    </div>
+                    -->
+                    <textarea class="form-control" id="inputData" rows="7" v-model="inputData"
+                              placeholder="Tên tỉnh thành, giá trị"></textarea>
+                    <small class="form-text text-muted" v-if="this.parsedData.length > 0">
+                        <code>{{ parsedData.length - unmatchedNames.length }}</code>
+                        tỉnh thành có dữ liệu<span v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">,</span>
+                        <template v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">
+                            <code>{{ unmatchedNames.length }}</code> tên không nhận ra: {{ unmatchedNames }}
+                        </template>
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="legendTitle">Tiêu đề phần chú thích</label>
+                    <input type="text" class="form-control" id="legendTitle" v-model="legendTitle" placeholder="đơn vị">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <a href="https://vega.github.io/vega/docs/schemes/#seq-multi-hue">Bảng màu</a>
+                        bản đồ
+                    </label>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="accent" name="colorScheme" class="custom-control-input"
+                               value="accent" v-model="colorScheme">
+                        <label class="custom-control-label" for="accent">
+                            <span class="color-block" title="#7fc97f" style="background: rgb(127, 201, 127);"></span>
+                            <span class="color-block" title="#beaed4" style="background: rgb(190, 174, 212);"></span>
+                            <span class="color-block" title="#fdc086" style="background: rgb(253, 192, 134);"></span>
+                            <span class="color-block" title="#ffff99" style="background: rgb(255, 255, 153);"></span>
+                            <span class="color-block" title="#386cb0" style="background: rgb(56, 108, 176);"></span>
+                            <span class="color-block" title="#f0027f" style="background: rgb(240, 2, 127);"></span>
+                            <span class="color-block" title="#bf5b17" style="background: rgb(191, 91, 23);"></span>
+                            <span class="color-block" title="#666666" style="background: rgb(102, 102, 102);"></span>
+                            <span class="px-1">— Rời rạc 1</span>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="category10" name="colorScheme" class="custom-control-input"
+                               value="category10" v-model="colorScheme">
+                        <label class="custom-control-label" for="category10">
+                            <span class="color-block" title="#1f77b4" style="background: rgb(31, 119, 180);"></span>
+                            <span class="color-block" title="#ff7f0e" style="background: rgb(255, 127, 14);"></span>
+                            <span class="color-block" title="#2ca02c" style="background: rgb(44, 160, 44);"></span>
+                            <span class="color-block" title="#d62728" style="background: rgb(214, 39, 40);"></span>
+                            <span class="color-block" title="#9467bd" style="background: rgb(148, 103, 189);"></span>
+                            <span class="color-block" title="#8c564b" style="background: rgb(140, 86, 75);"></span>
+                            <span class="color-block" title="#e377c2" style="background: rgb(227, 119, 194);"></span>
+                            <span class="color-block" title="#7f7f7f" style="background: rgb(127, 127, 127);"></span>
+                            <span class="color-block" title="#bcbd22" style="background: rgb(188, 189, 34);"></span>
+                            <span class="color-block" title="#17becf" style="background: rgb(23, 190, 207);"></span>
+                            <span class="px-1">— Rời rạc 2</span>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="viridis" name="colorScheme" class="custom-control-input" value="viridis"
+                               v-model="colorScheme">
+                        <label class="custom-control-label" for="viridis">
+                            <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="gradient-viridis">
+                                        <stop offset="0%" stop-color="#440154"></stop>
+                                        <stop offset="10%" stop-color="#482475"></stop>
+                                        <stop offset="20%" stop-color="#414487"></stop>
+                                        <stop offset="30%" stop-color="#355f8d"></stop>
+                                        <stop offset="40%" stop-color="#2a788e"></stop>
+                                        <stop offset="50%" stop-color="#21918c"></stop>
+                                        <stop offset="60%" stop-color="#22a884"></stop>
+                                        <stop offset="70%" stop-color="#44bf70"></stop>
+                                        <stop offset="80%" stop-color="#7ad151"></stop>
+                                        <stop offset="90%" stop-color="#bddf26"></stop>
+                                        <stop offset="100%" stop-color="#fde725"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <rect fill="url(#gradient-viridis)" x="0" y="0" width="1" height="1"></rect>
+                            </svg>
+                            <span class="px-1">— Viridis</span>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="yelloworangered" name="colorScheme" class="custom-control-input"
+                               value="yelloworangered" v-model="colorScheme">
+                        <label class="custom-control-label" for="yelloworangered">
+                            <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="gradient-yelloworangered">
+                                        <stop offset="0%" stop-color="rgb(255, 255, 204)"></stop>
+                                        <stop offset="10%" stop-color="rgb(255, 240, 169)"></stop>
+                                        <stop offset="20%" stop-color="rgb(254, 224, 135)"></stop>
+                                        <stop offset="30%" stop-color="rgb(254, 201, 101)"></stop>
+                                        <stop offset="40%" stop-color="rgb(254, 171, 75)"></stop>
+                                        <stop offset="50%" stop-color="rgb(253, 137, 60)"></stop>
+                                        <stop offset="60%" stop-color="rgb(250, 92, 46)"></stop>
+                                        <stop offset="70%" stop-color="rgb(236, 48, 35)"></stop>
+                                        <stop offset="80%" stop-color="rgb(211, 17, 33)"></stop>
+                                        <stop offset="90%" stop-color="rgb(175, 2, 37)"></stop>
+                                        <stop offset="100%" stop-color="rgb(128, 0, 38)"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <rect fill="url(#gradient-yelloworangered)" x="0" y="0" width="1" height="1"></rect>
+                            </svg>
+                            <span class="px-1">— Vàng đỏ</span>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="yellowgreen" name="colorScheme" class="custom-control-input"
+                               value="yellowgreen" v-model="colorScheme">
+                        <label class="custom-control-label" for="yellowgreen">
+                            <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="gradient-yellowgreen">
+                                        <stop offset="0%" stop-color="rgb(255, 255, 229)"></stop>
+                                        <stop offset="10%" stop-color="rgb(247, 252, 196)"></stop>
+                                        <stop offset="20%" stop-color="rgb(228, 244, 172)"></stop>
+                                        <stop offset="30%" stop-color="rgb(199, 232, 155)"></stop>
+                                        <stop offset="40%" stop-color="rgb(162, 216, 138)"></stop>
+                                        <stop offset="50%" stop-color="rgb(120, 197, 120)"></stop>
+                                        <stop offset="60%" stop-color="rgb(78, 175, 99)"></stop>
+                                        <stop offset="70%" stop-color="rgb(47, 148, 78)"></stop>
+                                        <stop offset="80%" stop-color="rgb(21, 121, 63)"></stop>
+                                        <stop offset="90%" stop-color="rgb(3, 96, 52)"></stop>
+                                        <stop offset="100%" stop-color="rgb(0, 69, 41)"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <rect fill="url(#gradient-yellowgreen)" x="0" y="0" width="1" height="1"></rect>
+                            </svg>
+                            <span class="px-1">— Vàng xanh</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cách hiển thị số liệu</label>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="integerFormat" name="valueFormat" class="custom-control-input"
+                               value=",d" v-model="valueFormat">
+                        <label class="custom-control-label" for="integerFormat">
+                            1.200 — làm tròn đơn vị
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="floatFormat" name="valueFormat" class="custom-control-input"
+                               value=",.2f" v-model="valueFormat">
+                        <label class="custom-control-label" for="floatFormat">
+                            1.200,00 — 2 chữ số sau dấu thập phân
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="percentFormat" name="valueFormat" class="custom-control-input"
+                               value=".1%" v-model="valueFormat">
+                        <label class="custom-control-label" for="percentFormat">
+                            30.5% — phần trăm
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="showBorders" v-model="showBorders">
+                    <label class="custom-control-label" for="showBorders">Hiện đường biên các tỉnh</label>
+                </div>
+                <div class="form-group custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="showLegend" v-model="showLegend">
+                    <label class="custom-control-label" for="showLegend">Hiện chú thích</label>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-outline-primary" v-on:click="saveAsPng()">
+                        Lưu lại hình PNG
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                            data-target="#shareLinkModal">
+                        Chia sẻ liên kết
+                    </button>
+                    <!-- <button type="button" class="btn btn-outline-primary">Xem toàn màn hình</button> -->
+                </div>
+                <hr class="my-4">
+                <h5>Tuỳ chọn nâng cao</h5>
+                <div class="form-group">
+                    <label for="valueFormat">Tuỳ chỉnh cách hiển thị số liệu</label>
+                    <input type="text" class="form-control" id="valueFormat" v-model="valueFormat">
+                    <small class="form-text text-muted">
+                        Theo cú pháp của
+                        <a href="https://github.com/d3/d3-format/blob/master/README.md#locale_format">D3 format</a>.
+                        Ví dụ <code>,.1f</code> cho số thực, <code>,d</code> cho số nguyên, <code>,.1%</code> cho tỷ lệ
+                        phần trăm,...
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="valueTransform">Biểu thức biến đổi giá trị *</label>
+                    <input type="text" class="form-control" id="valueTransform" v-model="valueTransform">
+                    <small class="form-text text-muted">
+                        Thay đổi giá trị bằng
+                        <a href="https://vega.github.io/vega/docs/expressions/">Vega expression</a>,
+                        để trống nếu không cần thay đổi giá trị từ file.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="valueThresholds">Ngưỡng giá trị để phân nhóm</label>
+                    <input type="text" class="form-control" id="valueThresholds" v-model="inputValueThresholds">
+                    <small class="form-text text-muted">
+                        Tuỳ chỉnh cách chia nhóm với thresholds thay vì chỉ là tuyến tính.
+                    </small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@5.7.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@4.3.0/build/vega-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@3.0.0-rc6"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3.19.2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4"></script>
+<script src="app.js"></script>
+
+<script async defer src="https://cdn.jsdelivr.net/npm/clipboard@2"></script>
+<script async defer src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4"></script>
+<script async defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+
+<div class="modal fade" id="shareLinkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chia sẻ liên kết</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Sử dụng liên kết dưới đây để lưu lại các thay đổi của bạn</p>
+                <div class="input-group mb-3">
+                    <input readonly type="text" class="form-control" id="shareLink">
+                    <div class="input-group-append">
+                        <button id="copyBtn" class="btn btn-outline-secondary" type="button"
+                                data-clipboard-target="#shareLink" data-placement="bottom">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
