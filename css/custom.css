@@ -14,6 +14,11 @@ code, pre, kbd, samp, var {
   font-family: 'Fira Sans Extra Condensed', sans-serif;
 }
 
+blockquote {
+  font-size: 1rem;
+	font-style: normal
+}
+
 .desc {
   font-style: normal;
 }
@@ -25,4 +30,12 @@ code, pre, kbd, samp, var {
 
 .entry-content a:hover {
   background-color: #ffdacc;
+}
+
+.list .item time {
+  font-size: 0.95rem;
+}
+
+.list .item .meta {
+  flex: 0 0 6.8em;
 }
