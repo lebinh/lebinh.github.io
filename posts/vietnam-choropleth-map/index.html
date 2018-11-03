@@ -6,14 +6,14 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta name='description' content='Ghi chú lại quá trình tạo ra một choropleth map của mật độ dân số Việt Nam từ hướng dẫn Command-Line Cartography của Mike Bostock. Ghi chú này vốn là một Jupyter notebook.
 Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong đó các khu vực được tô màu hay đánh dấu tương ứng với một giá trị nào đó, ví dụ như là mật độ dân số.'>
-<meta name='theme-color' content='#ffcd00'>
+<meta name='theme-color' content='#FF4500'>
 
 <meta property='og:title' content='Bản đồ mật đồ dân số Việt Nam • Hi, this is Binh.'>
 <meta property='og:description' content='Ghi chú lại quá trình tạo ra một choropleth map của mật độ dân số Việt Nam từ hướng dẫn Command-Line Cartography của Mike Bostock. Ghi chú này vốn là một Jupyter notebook.
 Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong đó các khu vực được tô màu hay đánh dấu tương ứng với một giá trị nào đó, ví dụ như là mật độ dân số.'>
 <meta property='og:url' content='https://thisisbinh.me/posts/vietnam-choropleth-map/'>
 <meta property='og:site_name' content='Hi, this is Binh.'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://thisisbinh.me/vn-population-density.png'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2018-10-09T18:56:49&#43;07:00'/><meta property='article:modified_time' content='2018-10-09T18:56:49&#43;07:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='https://thisisbinh.me/vn-population-density.png'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://thisisbinh.me/vn-population-density.png'><meta property='article:section' content='posts'><meta property='article:published_time' content='2018-10-09T18:56:49&#43;07:00'/><meta property='article:modified_time' content='2018-10-09T18:56:49&#43;07:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='https://thisisbinh.me/vn-population-density.png'>
 
 <meta name="generator" content="Hugo 0.49" />
 
@@ -22,9 +22,11 @@ Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong �
   
   
   <link rel='icon' href='/favicon.ico'>
-<link rel='stylesheet' href='/assets/css/main.b8f9eb89.css'><style>
-:root{--color-accent:#ffcd00;}
+<link rel='stylesheet' href='/assets/css/main.4267b3fa.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#FF4500;}
 </style>
+
+  
 
 </head>
 
@@ -37,7 +39,7 @@ Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong �
 
     <div class='main'>
 
-      <nav id='main-menu' class='main-menu' aria-label='Main Menu'>
+      <nav id='main-menu' class='menu main-menu' aria-label='Main Menu'>
   <div class='container'>
     
     <ul><li class='item'>
@@ -45,7 +47,6 @@ Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong �
       </li></ul>
   </div>
 </nav>
-
 
       <header id='header' class='header site-header'>
         <div class='container sep-after'>
@@ -136,7 +137,7 @@ Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong �
 <p>Việc tiếp theo chỉ là tải về file GeoJSON đã có sẵn, <a href="https://github.com/d3/d3-geo-projection/blob/master/README.md#geoproject">geo-project</a>, và render thành SVG tương tự như hướng dẫn.</p>
 
 <p>Trước hết, cài đặt các tools cần thiết từ gói <code>d3-geo-projection</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3-geo-projection</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3-geo-projection</code></pre></div>
 <pre><code>[K[?25h/usr/local/bin/geo2svg -&gt; /usr/local/lib/node_modules/d3-geo-projection/bin/geo2svging[0m [35maction:fi[0m[Km[K
 /usr/local/bin/geograticule -&gt; /usr/local/lib/node_modules/d3-geo-projection/bin/geograticule
 /usr/local/bin/geoproject -&gt; /usr/local/lib/node_modules/d3-geo-projection/bin/geoproject
@@ -144,9 +145,9 @@ Choropleth map là một dạng bản đồ chuyên đề (thematic map) trong �
 [K[?25h+ d3-geo-projection@2.4.1░░░░░[0m⸩ ⠼ install:d3-geo-projection: [7msill[0m [35mdoSerial[0m install 32[0m[K
 added 4 packages from 4 contributors in 2.874s
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -so vn.json <span style="color:#e6db74">&#39;https://data.opendevelopmentmekong.net/dataset/999c96d8-fae0-4b82-9a2b-e481f6f50e12/resource/234169fb-ae73-4f23-bbd4-ff20a4fca401/download/diaphantinh.geojson&#39;</span>
-geoproject <span style="color:#e6db74">&#39;d3.geoCylindricalStereographic().fitSize([800, 800], d)&#39;</span> &lt; vn.json &gt; vn-projected.json
-geo2svg -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> &lt; vn-projected.json &gt; vn.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -so vn.json <span style="color:#4e9a06">&#39;https://data.opendevelopmentmekong.net/dataset/999c96d8-fae0-4b82-9a2b-e481f6f50e12/resource/234169fb-ae73-4f23-bbd4-ff20a4fca401/download/diaphantinh.geojson&#39;</span>
+geoproject <span style="color:#4e9a06">&#39;d3.geoCylindricalStereographic().fitSize([800, 800], d)&#39;</span> &lt; vn.json &gt; vn-projected.json
+geo2svg -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> &lt; vn-projected.json &gt; vn.svg</code></pre></div>
 <p>Bước geoproject cần thiết để giảm thời gian render của GeoJSON file, đây là việc chuyển đổi (ánh xạ / project) từ kinh độ và vĩ độ vốn là toạ độ của trái đất trong không gian ba chiều (3D) ra toạ độ của pixel (2D) trên màn hình. <code>CylindricalStereographic</code> được chọn để có một bản đồ Việt Nam mà chúng ta thường thấy. Kích thước của bản đồ được chọn là <code>800x800</code> pixels để nó có thể hiện vừa trọn trong browser trên laptop của mình. Kết quả là một bản đồ trọn vẹn như đã thấy ở trên.</p>
 
 <p>Cảm ơn <strong><a href="https://vietnam.opendevelopmentmekong.net/vi/">Open Development Việt Nam</a></strong>.</p>
@@ -156,7 +157,7 @@ geo2svg -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff"
 <p><a href="https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3">Phần 2</a> tập trung vào việc thu thập và xữ lý dữ liệu, đồng thời kết hợp dữ liệu địa giới của phần trước với dữ liệu mới.</p>
 
 <p>Hãy xem chúng ta có gì trong file GeoJSON của mình:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">jq . vn-projected.json | head -n <span style="color:#ae81ff">20</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">jq . vn-projected.json <span style="color:#000;font-weight:bold">|</span> head -n <span style="color:#0000cf;font-weight:bold">20</span></code></pre></div>
 <pre><code>{
   &quot;type&quot;: &quot;FeatureCollection&quot;,
   &quot;features&quot;: [
@@ -179,11 +180,11 @@ geo2svg -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff"
               188.57295149920265,
 Error: writing output failed: Broken pipe
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> json
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">json</span>
 
-<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;vn-projected.json&#39;</span>) <span style="color:#66d9ef">as</span> f:
-    geo <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>load(f)
-geo<span style="color:#f92672">.</span>keys()</code></pre></div>
+<span style="color:#204a87;font-weight:bold">with</span> <span style="color:#204a87">open</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;vn-projected.json&#39;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">f</span><span style="color:#000;font-weight:bold">:</span>
+    <span style="color:#000">geo</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">json</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">load</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000">geo</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">keys</span><span style="color:#000;font-weight:bold">()</span></code></pre></div>
 <pre><code>dict_keys(['type', 'features'])
 </code></pre>
 
@@ -205,16 +206,16 @@ geo<span style="color:#f92672">.</span>keys()</code></pre></div>
 <p>Đến bước này chỉ có duy nhất tên các tỉnh thành (cùng với một số thuộc tính <code>id</code>, <code>code</code>, không rõ ràng) và toạ độ địa lý của chúng trong dữ liệu của mình.</p>
 
 <p>Tiếp theo cần tìm dữ liệu dân số các tỉnh của Việt Nam. Lần này đáng mừng là chúng ta có thể tìm được dữ liệu này từ nguồn chính thống của chỉnh phủ trên website của <a href="http://www.gso.gov.vn/default.aspx?tabid=714">Tổng cục thống kê</a>. Tuy nhiên nguồn dữ liệu này chỉ là một trang web chứ không phải là  một API đẹp đẽ vì thế phải tốn một vài lần nhấp chuột để có tải về <a href="https://gist.github.com/lebinh/2b1dfa2925235388be3592fd9b483eb8">file CSV chứa mật độ dân số theo địa phương</a>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> csv
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">csv</span>
 
-density <span style="color:#f92672">=</span> {}
-<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;mat-do-dan-so.csv&#39;</span>) <span style="color:#66d9ef">as</span> f:
-    reader <span style="color:#f92672">=</span> csv<span style="color:#f92672">.</span>reader(f)
-    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> reader:
-        <span style="color:#75715e"># check to skip the header row</span>
-        <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39; &#39;</span>:
-            density[row[<span style="color:#ae81ff">0</span>]] <span style="color:#f92672">=</span> float(row[<span style="color:#ae81ff">1</span>])
-density</code></pre></div>
+<span style="color:#000">density</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{}</span>
+<span style="color:#204a87;font-weight:bold">with</span> <span style="color:#204a87">open</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;mat-do-dan-so.csv&#39;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">f</span><span style="color:#000;font-weight:bold">:</span>
+    <span style="color:#000">reader</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">csv</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">reader</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">row</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">reader</span><span style="color:#000;font-weight:bold">:</span>
+        <span style="color:#8f5902;font-style:italic"># check to skip the header row</span>
+        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">row</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#4e9a06">&#39; &#39;</span><span style="color:#000;font-weight:bold">:</span>
+            <span style="color:#000">density</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">row</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">float</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">row</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">])</span>
+<span style="color:#000">density</span></code></pre></div>
 <pre><code>{'CẢ NƯỚC': 280.0,
  'Đồng bằng sông Hồng': 994.0,
  'Hà Nội': 2182.0,
@@ -288,16 +289,16 @@ density</code></pre></div>
 </code></pre>
 
 <p>Chúng ta cũng cần biết thêm dải giá trị (nhỏ nhất và lớn nhất) của dữ liệu này để dùng về sau.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;min = {}&#39;</span><span style="color:#f92672">.</span>format(min(density<span style="color:#f92672">.</span>values())))
-<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;max = {}&#39;</span><span style="color:#f92672">.</span>format(max(density<span style="color:#f92672">.</span>values())))</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;min = {}&#39;</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">format</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">density</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">values</span><span style="color:#000;font-weight:bold">())))</span>
+<span style="color:#204a87;font-weight:bold">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;max = {}&#39;</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">format</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">density</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">values</span><span style="color:#000;font-weight:bold">())))</span></code></pre></div>
 <pre><code>min = 48.0
 max = 4025.0
 </code></pre>
 
 <p>Vấn đề đầu tiên ở đây là chúng ta không có bất kỳ <code>id</code> nào để join dữ liệu, ngoại trừ tên các tỉnh thành. Điều này nhiều khả năng sẽ dẫn đến việc không thống nhất trong dữ liệu của các tỉnh như &ldquo;Bắc Kạn&rdquo; hay &ldquo;Đắk Lắk&rdquo;. Hãy xem có những tỉnh thành nào có tên ghi khác nhau trong hai bộ dữ liệu:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">geo_provinces <span style="color:#f92672">=</span> set(f[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;ten_tinh&#39;</span>] <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> geo[<span style="color:#e6db74">&#39;features&#39;</span>])
-density_provinces <span style="color:#f92672">=</span> set(density<span style="color:#f92672">.</span>keys())
-geo_provinces <span style="color:#f92672">-</span> density_provinces</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">geo_provinces</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">set</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;ten_tinh&#39;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">f</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">geo</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;features&#39;</span><span style="color:#000;font-weight:bold">])</span>
+<span style="color:#000">density_provinces</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">set</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">density</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">keys</span><span style="color:#000;font-weight:bold">())</span>
+<span style="color:#000">geo_provinces</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">density_provinces</span></code></pre></div>
 <pre><code>{'Bà Rịa -Vũng Tàu',
  'Cần Thơn',
  'Hòa Bình',
@@ -309,7 +310,7 @@ geo_provinces <span style="color:#f92672">-</span> density_provinces</code></pre
  'Đăk Lăk',
  'Đăk Nông'}
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">density_provinces <span style="color:#f92672">-</span> geo_provinces</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">density_provinces</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">geo_provinces</span></code></pre></div>
 <pre><code>{'Bà Rịa - Vũng Tàu',
  'Bắc Trung Bộ và Duyên hải miền Trung',
  'CẢ NƯỚC',
@@ -330,55 +331,55 @@ geo_provinces <span style="color:#f92672">-</span> density_provinces</code></pre
 </code></pre>
 
 <p>Đúng như dự đoán, lỗi chính tả và sự không thống nhất là đặc trưng của tiếng Việt. Mặc dù vậy có thể thấy rằng dữ liệu từ website của cục thống kê là chuẩn xác hơn. Hãy sửa dữ liệu trong file GeoJSON của chúng ta theo tên chuẩn này, đồng thời thêm dữ liệu mật độ dân số vào các thuộc tính, cũng như bỏ đi những thuộc tính không cần thiết còn lại:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corrections <span style="color:#f92672">=</span> {
-    <span style="color:#e6db74">&#39;Bà Rịa -Vũng Tàu&#39;</span>: <span style="color:#e6db74">&#39;Bà Rịa - Vũng Tàu&#39;</span>,
-    <span style="color:#e6db74">&#39;Cần Thơn&#39;</span>: <span style="color:#e6db74">&#39;Cần Thơ&#39;</span>,
-    <span style="color:#e6db74">&#39;Hòa Bình&#39;</span>: <span style="color:#e6db74">&#39;Hoà Bình&#39;</span>,
-    <span style="color:#e6db74">&#39;Khánh Hòa&#39;</span>: <span style="color:#e6db74">&#39;Khánh Hoà&#39;</span>,
-    <span style="color:#e6db74">&#39;Kien Giang&#39;</span>: <span style="color:#e6db74">&#39;Kiên Giang&#39;</span>,
-    <span style="color:#e6db74">&#39;Quản Bình&#39;</span>: <span style="color:#e6db74">&#39;Quảng Bình&#39;</span>,
-    <span style="color:#e6db74">&#39;TP. Hồ Chí Minh&#39;</span>: <span style="color:#e6db74">&#39;TP.Hồ Chí Minh&#39;</span>,
-    <span style="color:#e6db74">&#39;Thanh Hóa&#39;</span>: <span style="color:#e6db74">&#39;Thanh Hoá&#39;</span>,
-    <span style="color:#e6db74">&#39;Đăk Lăk&#39;</span>: <span style="color:#e6db74">&#39;Đắk Lắk&#39;</span>,
-    <span style="color:#e6db74">&#39;Đăk Nông&#39;</span>: <span style="color:#e6db74">&#39;Đắk Nông&#39;</span>
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">corrections</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#4e9a06">&#39;Bà Rịa -Vũng Tàu&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Bà Rịa - Vũng Tàu&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Cần Thơn&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Cần Thơ&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Hòa Bình&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Hoà Bình&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Khánh Hòa&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Khánh Hoà&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Kien Giang&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Kiên Giang&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Quản Bình&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Quảng Bình&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;TP. Hồ Chí Minh&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;TP.Hồ Chí Minh&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Thanh Hóa&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Thanh Hoá&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Đăk Lăk&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Đắk Lắk&#39;</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#4e9a06">&#39;Đăk Nông&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#39;Đắk Nông&#39;</span>
+<span style="color:#000;font-weight:bold">}</span>
 
-<span style="color:#66d9ef">for</span> feature <span style="color:#f92672">in</span> geo[<span style="color:#e6db74">&#39;features&#39;</span>]:
-    name <span style="color:#f92672">=</span> feature[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;ten_tinh&#39;</span>]
-    <span style="color:#66d9ef">if</span> name <span style="color:#f92672">in</span> corrections:
-        <span style="color:#75715e"># correct province&#39;s name if needed</span>
-        feature[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;ten_tinh&#39;</span>] <span style="color:#f92672">=</span> corrections[name]
-        name <span style="color:#f92672">=</span> corrections[name]
+<span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">feature</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">geo</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;features&#39;</span><span style="color:#000;font-weight:bold">]:</span>
+    <span style="color:#000">name</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">feature</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;ten_tinh&#39;</span><span style="color:#000;font-weight:bold">]</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">name</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">corrections</span><span style="color:#000;font-weight:bold">:</span>
+        <span style="color:#8f5902;font-style:italic"># correct province&#39;s name if needed</span>
+        <span style="color:#000">feature</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;ten_tinh&#39;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">corrections</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">name</span><span style="color:#000;font-weight:bold">]</span>
+        <span style="color:#000">name</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">corrections</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">name</span><span style="color:#000;font-weight:bold">]</span>
     
-    <span style="color:#75715e"># add density property and remove unused others</span>
-    feature[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;density&#39;</span>] <span style="color:#f92672">=</span> density[name]
-    <span style="color:#66d9ef">del</span> feature[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;gid&#39;</span>]
-    <span style="color:#66d9ef">del</span> feature[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;code&#39;</span>]
+    <span style="color:#8f5902;font-style:italic"># add density property and remove unused others</span>
+    <span style="color:#000">feature</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;density&#39;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">density</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">name</span><span style="color:#000;font-weight:bold">]</span>
+    <span style="color:#204a87;font-weight:bold">del</span> <span style="color:#000">feature</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;gid&#39;</span><span style="color:#000;font-weight:bold">]</span>
+    <span style="color:#204a87;font-weight:bold">del</span> <span style="color:#000">feature</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;code&#39;</span><span style="color:#000;font-weight:bold">]</span>
 
-<span style="color:#75715e"># and let&#39;s see if we still seeing any differences</span>
-geo_provinces <span style="color:#f92672">=</span> set(f[<span style="color:#e6db74">&#39;properties&#39;</span>][<span style="color:#e6db74">&#39;ten_tinh&#39;</span>] <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> geo[<span style="color:#e6db74">&#39;features&#39;</span>])
-geo_provinces <span style="color:#f92672">-</span> density_provinces</code></pre></div>
+<span style="color:#8f5902;font-style:italic"># and let&#39;s see if we still seeing any differences</span>
+<span style="color:#000">geo_provinces</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">set</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;properties&#39;</span><span style="color:#000;font-weight:bold">][</span><span style="color:#4e9a06">&#39;ten_tinh&#39;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">f</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">geo</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;features&#39;</span><span style="color:#000;font-weight:bold">])</span>
+<span style="color:#000">geo_provinces</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">density_provinces</span></code></pre></div>
 <pre><code>set()
 </code></pre>
 
 <p>Empty set nghĩa là hai bộ tên tỉnh thành đã giống nhau, hãy lưu lại dữ liệu này vào một file mới.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;vn-density.json&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
-    json<span style="color:#f92672">.</span>dump(geo, f)</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">with</span> <span style="color:#204a87">open</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;vn-density.json&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;w&#39;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">f</span><span style="color:#000;font-weight:bold">:</span>
+    <span style="color:#000">json</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">dump</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">geo</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">f</span><span style="color:#000;font-weight:bold">)</span></code></pre></div>
 <p>Phần tiếp theo chỉ đơn giản là sao chép và chạy những lệnh từ <a href="https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3">bài hướng dẫn</a> của Mike Bostock. Trước hết là split file GeoJSON đang có thành file ndjson (Newline Delimited JSON).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ndjson-split <span style="color:#e6db74">&#39;d.features&#39;</span> &lt; vn-density.json &gt; vn-density.ndjson</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ndjson-split <span style="color:#4e9a06">&#39;d.features&#39;</span> &lt; vn-density.json &gt; vn-density.ndjson</code></pre></div>
 <p>Mike Bostock dành phần lớn thời gian trong phần 2 của mình để giới thiệu về NDJSON. NDJSON đơn giản là file gồm nhiều JSON objects phân tách bằng dấu xuống hàng, có nghĩa là mỗi object nằm trên một hàng. Điều này giúp cho việc xử lý trên dòng lệnh (command line) đơn giản hơn, chủ yếu vì phần lớn các công cụ và mọi người đều đã quen với cách tư duy xử lý theo từng dòng (line oriented). Còn ở đây mình chủ yếu xài python code để xử lý dữ liệu vì chủ yếu (1) đã và đang viết note này trong một Jupyter notebook và (2) lười phải học thêm một loạt lệnh mới để xử lý NDJSON như trong bài gốc.</p>
 
 <p>Tiếp theo đơn giản là install d3 và tạo mapping tương ứng từ mật độ dân số, <code>density</code>, tới màu tô trên bản đồ, <code>fill</code>. Domain được chọn là <code>[0, 4000]</code> vì giá trị lớn nhất của mật độ dân số là 4025 như đã thấy ở trên.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3</code></pre></div>
 <pre><code>[K[?25h+ d3@5.7.027m[90m░░░░░░[0m⸩ ⠙ build:iconv-lite: [7msill[0m [35mlinkStuff[0m iconv-lite@0.4.24 is in[0m[Km[K
 added 36 packages from 4 contributors in 8.243s
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ndjson-map -r d3 <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#39;(d.properties.fill = d3.scaleSequential(d3.interpolateViridis).domain([0, 4000])(d.properties.density), d)&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &lt; vn-density.ndjson <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &gt; vn-color.ndjson</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ndjson-map -r d3 <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#4e9a06">&#39;(d.properties.fill = d3.scaleSequential(d3.interpolateViridis).domain([0, 4000])(d.properties.density), d)&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &lt; vn-density.ndjson <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &gt; vn-color.ndjson</code></pre></div>
 <p>Cuối cùng là render ảnh SVG từ file NDJSON bằng <code>geo2svg</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geo2svg -n --stroke none -p <span style="color:#ae81ff">1</span> -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> &lt; vn-color.ndjson &gt; vn-color.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geo2svg -n --stroke none -p <span style="color:#0000cf;font-weight:bold">1</span> -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> &lt; vn-color.ndjson &gt; vn-color.svg</code></pre></div>
 <p><img src="./vn-color.svg" alt="vn-color.svg" /></p>
 
 <p>Ta da! 🎉</p>
@@ -390,7 +391,7 @@ added 36 packages from 4 contributors in 8.243s
 <p><a href="https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e">Phần 3</a> tập trung vào việc tối ưu kích thước lưu trữ (và tất nhiên, truyền tải) của dữ liệu bằng cách chuyển sang TopoJSON.</p>
 
 <p>Hãy xem lại kích thước của file GeoJSON mà chúng ta tạo ra từ phần trước.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -lh vn-density.json</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -lh vn-density.json</code></pre></div>
 <pre><code>-rw-r--r-- 1 binhle staff 3.9M Oct  9 18:29 vn-density.json
 </code></pre>
 
@@ -410,7 +411,7 @@ added 36 packages from 4 contributors in 8.243s
 </ol>
 
 <p>Điều quan trọng nhất là bạn có thể bỏ qua những chuyện đó (<em>như mình</em>) và sử dụng công cụ có sẵn để chuyển đổi từ file GeoJSON sang file TopoJSON.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs topojson</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs topojson</code></pre></div>
 <pre><code>[K[?25h/usr/local/bin/toposimplify -&gt; /usr/local/lib/node_modules/topojson/node_modules/topojson-simplify/bin/toposimplifyK
 /usr/local/bin/topo2geo -&gt; /usr/local/lib/node_modules/topojson/node_modules/topojson-client/bin/topo2geo
 /usr/local/bin/topomerge -&gt; /usr/local/lib/node_modules/topojson/node_modules/topojson-client/bin/topomerge
@@ -421,20 +422,20 @@ added 5 packages from 2 contributors in 3.511s
 </code></pre>
 
 <p>Một lệnh đơn giản để chuyển file GeoJSON thành TopoJSON.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geo2topo -n tracts<span style="color:#f92672">=</span>vn-density.ndjson &gt; vn-tracts-topo.json</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geo2topo -n <span style="color:#000">tracts</span><span style="color:#ce5c00;font-weight:bold">=</span>vn-density.ndjson &gt; vn-tracts-topo.json</code></pre></div>
 <p>Tiếp theo là simplify, tương tự như hướng dẫn gốc.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">toposimplify -p <span style="color:#ae81ff">1</span> -f &lt; vn-tracts-topo.json &gt; vn-simple-topo.json</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">toposimplify -p <span style="color:#0000cf;font-weight:bold">1</span> -f &lt; vn-tracts-topo.json &gt; vn-simple-topo.json</code></pre></div>
 <p>Và cuối cùng là quantize.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topoquantize 1e5 &lt; vn-simple-topo.json &gt; vn-quantized-topo.json</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -lh *-topo.json</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topoquantize 1e5 &lt; vn-simple-topo.json &gt; vn-quantized-topo.json</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -lh *-topo.json</code></pre></div>
 <pre><code>-rw-r--r-- 1 binhle staff  40K Oct  9 18:30 vn-quantized-topo.json
 -rw-r--r-- 1 binhle staff 119K Oct  9 18:30 vn-simple-topo.json
 -rw-r--r-- 1 binhle staff 2.8M Oct  9 18:30 vn-tracts-topo.json
 </code></pre>
 
 <p>Kết quả: kích thước file giảm đến gần 100 lần qua các bước trên, từ gần 4MB chỉ còn lại 40KB. Điều này cộng thêm nén bằng <code>gzip</code> khi transfer, một trong những kỹ thuật tối ưu phổ biến, có thể đem lại kích cỡ tối ưu (~15KB) để hiển thị trên web. Nhưng đổi lại những cách thức này có làm giảm độ chính xác trong bản đồ hay không? Hãy so sánh bản đồ trước và sau khi tối ưu bằng cách tạo ra một ảnh động từ 2 hình.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo tracts<span style="color:#f92672">=</span>- &lt; vn-quantized-topo.json | <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    geo2svg -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> &gt; vn-quantized-topo.svg
-convert -delay <span style="color:#ae81ff">100</span> -loop <span style="color:#ae81ff">0</span> vn.svg vn-quantized-topo.svg vn-quantized-topo.gif</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo <span style="color:#000">tracts</span><span style="color:#ce5c00;font-weight:bold">=</span>- &lt; vn-quantized-topo.json <span style="color:#000;font-weight:bold">|</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>    geo2svg -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> &gt; vn-quantized-topo.svg
+convert -delay <span style="color:#0000cf;font-weight:bold">100</span> -loop <span style="color:#0000cf;font-weight:bold">0</span> vn.svg vn-quantized-topo.svg vn-quantized-topo.gif</code></pre></div>
 <p><img src="./vn-quantized-topo.gif" alt="vn-quantized-topo.gif" /></p>
 
 <p>Lưu ý là các bước trên như simplify hay quantize có thể làm mất thông tin gốc tuy nhiên có thể chấp nhận được nếu sử dụng hợp lý. Ví dụ ở đây có thể thấy biên giới các tỉnh gần như không có gì thay đổi khi nhìn bằng mắt thường. Điểm khác biệt lớn nhất là sự biến mất của các đảo nhỏ tập trung ở khu vực Hạ Long, bờ biển miền Trung, Phú Quốc, và quần đảo Trường Sa. Tuy nhiên các đảo chính và hình dáng quần đảo vẫn được bảo tồn, như mục tiêu của chúng ta.</p>
@@ -448,46 +449,46 @@ convert -delay <span style="color:#ae81ff">100</span> -loop <span style="color:#
 <p>Không có nhiều sự thay đổi hay chỉnh sửa lớn nào cần thiết so với hướng dẫn gốc trong phần này. Phần lớn công việc bây giờ chỉ là copy &amp; paste.</p>
 
 <p>Bắt đầu bằng sequential mapping của dữ liệu tương tự như trong phần 2.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo tracts<span style="color:#f92672">=</span>- <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &lt; vn-quantized-topo.json <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-map -r d3 <span style="color:#e6db74">&#39;z = d3.scaleSequential(d3.interpolateViridis).domain([0, 4000]), d.features.forEach(f =&gt; f.properties.fill = z(f.properties.density)), d&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-split <span style="color:#e6db74">&#39;d.features&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | geo2svg -n --stroke none -p <span style="color:#ae81ff">1</span> -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &gt; vn-topo-color.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo <span style="color:#000">tracts</span><span style="color:#ce5c00;font-weight:bold">=</span>- <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &lt; vn-quantized-topo.json <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-map -r d3 <span style="color:#4e9a06">&#39;z = d3.scaleSequential(d3.interpolateViridis).domain([0, 4000]), d.features.forEach(f =&gt; f.properties.fill = z(f.properties.density)), d&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-split <span style="color:#4e9a06">&#39;d.features&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> geo2svg -n --stroke none -p <span style="color:#0000cf;font-weight:bold">1</span> -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &gt; vn-topo-color.svg</code></pre></div>
 <p><img src="./vn-topo-color.svg" alt="vn-topo-color.svg" /></p>
 
 <p>Bởi vì mật đồ dân số lớn hơn hẳn các nơi của TP. Hồ Chí Minh hay Hà Nội, các tỉnh thành khác gần như có màu gần nhau và khó phân biệt với dải màu tuần tự (linear). Tác giả đề nghị sử dụng exponential scale, cụ thể là thang căn bậc 2, để giúp giảm sự phân biệt giữa thấp và cao này. Nhờ đó làm sáng hơn các vùng tối màu và giúp phân biệt chúng rõ hơn.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo tracts<span style="color:#f92672">=</span>- <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &lt; vn-quantized-topo.json <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-map -r d3 <span style="color:#e6db74">&#39;z = d3.scaleSequential(d3.interpolateViridis).domain([0, 65]), d.features.forEach(f =&gt; f.properties.fill = z(Math.sqrt(f.properties.density))), d&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-split <span style="color:#e6db74">&#39;d.features&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | geo2svg -n --stroke none -p <span style="color:#ae81ff">1</span> -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &gt; vn-topo-sqrt.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo <span style="color:#000">tracts</span><span style="color:#ce5c00;font-weight:bold">=</span>- <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &lt; vn-quantized-topo.json <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-map -r d3 <span style="color:#4e9a06">&#39;z = d3.scaleSequential(d3.interpolateViridis).domain([0, 65]), d.features.forEach(f =&gt; f.properties.fill = z(Math.sqrt(f.properties.density))), d&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-split <span style="color:#4e9a06">&#39;d.features&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> geo2svg -n --stroke none -p <span style="color:#0000cf;font-weight:bold">1</span> -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &gt; vn-topo-sqrt.svg</code></pre></div>
 <p><img src="./vn-topo-sqrt.svg" alt="vn-topo-sqrt.svg" /></p>
 
 <p>Cuối cùng là gợi ý sử dụng các ngưỡng giá trị cụ thể (thresholds) cộng với một thang màu rời rạc thay vì các giá trị liên tục, sử dụng <code>d3-scale-chromatic</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3-scale-chromatic</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -gs d3-scale-chromatic</code></pre></div>
 <pre><code>[K[?25h+ d3-scale-chromatic@1.3.30m⸩ ⠏ refresh-package-json:d3-scale-chromatic: [32;40mtiming[0m [35maction:f[0m[Km[K
 added 3 packages from 1 contributor in 1.445s
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo tracts<span style="color:#f92672">=</span>- <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &lt; vn-quantized-topo.json <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-map -r d3 -r d3<span style="color:#f92672">=</span>d3-scale-chromatic <span style="color:#e6db74">&#39;z = d3.scaleThreshold().domain([1, 50, 200, 500, 1000, 2000, 4000]).range(d3.schemeOrRd[8]), d.features.forEach(f =&gt; f.properties.fill = z(f.properties.density)), d&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | ndjson-split <span style="color:#e6db74">&#39;d.features&#39;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  | geo2svg -n --stroke none -p <span style="color:#ae81ff">1</span> -w <span style="color:#ae81ff">800</span> -h <span style="color:#ae81ff">800</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &gt; vn-topo-threshold.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">topo2geo <span style="color:#000">tracts</span><span style="color:#ce5c00;font-weight:bold">=</span>- <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &lt; vn-quantized-topo.json <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-map -r d3 -r <span style="color:#000">d3</span><span style="color:#ce5c00;font-weight:bold">=</span>d3-scale-chromatic <span style="color:#4e9a06">&#39;z = d3.scaleThreshold().domain([1, 50, 200, 500, 1000, 2000, 4000]).range(d3.schemeOrRd[8]), d.features.forEach(f =&gt; f.properties.fill = z(f.properties.density)), d&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> ndjson-split <span style="color:#4e9a06">&#39;d.features&#39;</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  <span style="color:#000;font-weight:bold">|</span> geo2svg -n --stroke none -p <span style="color:#0000cf;font-weight:bold">1</span> -w <span style="color:#0000cf;font-weight:bold">800</span> -h <span style="color:#0000cf;font-weight:bold">800</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &gt; vn-topo-threshold.svg</code></pre></div>
 <p><img src="./vn-topo-threshold.svg" alt="vn-topo-threshold.svg" /></p>
 
 <p>Thang màu sử dụng ở đây, <code>d3.schemeOrRd[8]</code>, là <a href="http://colorbrewer2.org/#type=sequential&amp;scheme=OrRd&amp;n=8">OrDr với 8 màu</a>.</p>
 
 <p>Bước cuối cùng là thêm chú giải cho các màu được sử dụng. Đáng tiếc là chú giải này được tạo ra bằng một cách không được dễ dàng cho lắm, bằng <a href="https://gist.github.com/lebinh/65a3743f07bbefd8fb507b589541d39b">D3 trong browser</a> và copy output SVG vào file bản đồ.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%%bash
-<span style="color:#75715e"># bash is needed for &lt;() construct used below
-</span><span style="color:#75715e"></span>
-export KEY_GIST_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://gist.githubusercontent.com/lebinh/65a3743f07bbefd8fb507b589541d39b/raw/d77dcecda3ae59f020c2ac0351216aacbb26eb56/key.svg&#39;</span>
-sed <span style="color:#e6db74">&#39;s#&lt;/svg&gt;##&#39;</span> &lt; vn-topo-threshold.svg | <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  cat - &lt;<span style="color:#f92672">(</span>curl -s $KEY_GIST_URL<span style="color:#f92672">)</span> &lt;<span style="color:#f92672">(</span>echo <span style="color:#e6db74">&#39;&lt;/svg&gt;&#39;</span><span style="color:#f92672">)</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>  &gt; vn-population-density.svg</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%%bash
+<span style="color:#8f5902;font-style:italic"># bash is needed for &lt;() construct used below
+</span><span style="color:#8f5902;font-style:italic"></span>
+<span style="color:#204a87">export</span> <span style="color:#000">KEY_GIST_URL</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;https://gist.githubusercontent.com/lebinh/65a3743f07bbefd8fb507b589541d39b/raw/d77dcecda3ae59f020c2ac0351216aacbb26eb56/key.svg&#39;</span>
+sed <span style="color:#4e9a06">&#39;s#&lt;/svg&gt;##&#39;</span> &lt; vn-topo-threshold.svg <span style="color:#000;font-weight:bold">|</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  cat - &lt;<span style="color:#ce5c00;font-weight:bold">(</span>curl -s <span style="color:#000">$KEY_GIST_URL</span><span style="color:#ce5c00;font-weight:bold">)</span> &lt;<span style="color:#ce5c00;font-weight:bold">(</span><span style="color:#204a87">echo</span> <span style="color:#4e9a06">&#39;&lt;/svg&gt;&#39;</span><span style="color:#ce5c00;font-weight:bold">)</span> <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  &gt; vn-population-density.svg</code></pre></div>
 <p><img src="./vn-population-density.svg" alt="vn-population-density.svg" /></p>
 
 <p>Note này đến đây là hết nhưng đây chưa phải là kết quả cuối cùng. Vẫn còn quá nhiều bước và thao tác chỉ để có một bản đồ đơn giản này. Chúng ta có thể làm tốt hơn.</p>
@@ -499,7 +500,6 @@ sed <span style="color:#e6db74">&#39;s#&lt;/svg&gt;##&#39;</span> &lt; vn-topo-t
   
 <footer class='entry-footer'>
   <div class='container sep-before'>
-  
   </div>
 </footer>
 
@@ -526,57 +526,7 @@ sed <span style="color:#e6db74">&#39;s#&lt;/svg&gt;##&#39;</span> &lt; vn-topo-t
       </main>
 
       <footer id='footer' class='footer'>
-        <div class='container sep-before'>
-          <section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
-    <ul><li>
-        <a href='https://github.com/lebinh' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='https://twitter.com/lebinh' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='https://instagram.com/lebinh' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Instagram account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-  <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='mailto:lebinh%20DOT%20it%20AT%20%3cbig%20G%20email%3e' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-  <polyline points="22,6 12,13 2,6"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='https://linkedin.com/in/lebinh' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-  <rect x="2" y="9" width="4" height="12"/>
-  <circle cx="4" cy="4" r="2"/>
-  
-</svg>
-</a>
-      </li></ul>
-  </nav>
-</section>
-          <div class='copyright'>
+        <div class='container sep-before'><div class='copyright'>
   <p> &copy; 2018 Binh Le </p>
 </div>
 
@@ -586,7 +536,8 @@ sed <span style="color:#e6db74">&#39;s#&lt;/svg&gt;##&#39;</span> &lt; vn-topo-t
     </div>
   </div><script>window.__public_path__='\/assets\/js\/'</script>
 
-<script src='/assets/js/main.4d3afaaf.js'></script>
+<script src='/assets/js/main.59f76c44.js'></script>
+
 </body>
 
 </html>

@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed|Vollkorn');
+html, body {
+  font-family: 'Vollkorn', serif;
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+code, pre, kbd, samp, var {
+  font-size: .8rem;
+	border: none;
+}
+
+.title, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+}
+
+.desc {
+  font-style: normal;
+}
+
+.entry-content a {
+  color: #992900;
+  border-bottom: none;
+}
+
+.entry-content a:hover {
+  background-color: #ffdacc;
+}
