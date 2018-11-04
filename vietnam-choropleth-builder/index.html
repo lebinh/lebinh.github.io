@@ -70,12 +70,7 @@
                 </div>
                 <div class="form-group">
                     <label for="inputData">Số liệu (định dạng CSV/TSV)</label>
-                    <!--
-                    <div class="float-right">
-                        <a href="#">Tạo ngẫu nhiên</a>
-                    </div>
-                    -->
-                    <textarea class="form-control" id="inputData" rows="7" v-model="inputData"
+                    <textarea class="form-control" id="inputData" rows="8" v-model="inputData"
                               placeholder="Tên tỉnh thành, giá trị"></textarea>
                     <small class="form-text text-muted" v-if="this.parsedData.length > 0">
                         <code>{{ parsedData.length - unmatchedNames.length }}</code>
@@ -201,6 +196,31 @@
                             <span class="px-1">— Vàng xanh</span>
                         </label>
                     </div>
+                    <div class="custom-control custom-radio scheme">
+                        <input type="radio" id="redyellowgreen" name="colorScheme" class="custom-control-input"
+                               value="redyellowgreen" v-model="colorScheme">
+                        <label class="custom-control-label" for="redyellowgreen">
+                            <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="gradient-redyellowgreen">
+                                        <stop offset="0%" stop-color="rgb(165, 0, 38)"></stop>
+                                        <stop offset="10%" stop-color="rgb(212, 50, 44)"></stop>
+                                        <stop offset="20%" stop-color="rgb(241, 110, 67)"></stop>
+                                        <stop offset="30%" stop-color="rgb(252, 172, 99)"></stop>
+                                        <stop offset="40%" stop-color="rgb(254, 221, 141)"></stop>
+                                        <stop offset="50%" stop-color="rgb(249, 247, 174)"></stop>
+                                        <stop offset="60%" stop-color="rgb(215, 238, 142)"></stop>
+                                        <stop offset="70%" stop-color="rgb(164, 216, 110)"></stop>
+                                        <stop offset="80%" stop-color="rgb(100, 188, 97)"></stop>
+                                        <stop offset="90%" stop-color="rgb(34, 150, 79)"></stop>
+                                        <stop offset="100%" stop-color="rgb(0, 104, 55)"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <rect fill="url(#gradient-redyellowgreen)" x="0" y="0" width="1" height="1"></rect>
+                            </svg>
+                            <span class="px-1">— Đỏ vàng xanh</span>
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Cách hiển thị số liệu</label>
@@ -242,18 +262,14 @@
                             data-target="#shareLinkModal">
                         Chia sẻ liên kết
                     </button>
-                    <!-- <button type="button" class="btn btn-outline-primary">Xem toàn màn hình</button> -->
                 </div>
                 <hr class="my-4">
                 <h5>Tuỳ chọn nâng cao</h5>
                 <div class="form-group">
-                    <label for="valueFormat">Tuỳ chỉnh cách hiển thị số liệu</label>
-                    <input type="text" class="form-control" id="valueFormat" v-model="valueFormat">
+                    <label for="valueThresholds">Ngưỡng giá trị để phân nhóm</label>
+                    <input type="text" class="form-control" id="valueThresholds" v-model="inputValueThresholds">
                     <small class="form-text text-muted">
-                        Theo cú pháp của
-                        <a href="https://github.com/d3/d3-format/blob/master/README.md#locale_format">D3 format</a>.
-                        Ví dụ <code>,.1f</code> cho số thực, <code>,d</code> cho số nguyên, <code>,.1%</code> cho tỷ lệ
-                        phần trăm,...
+                        Tuỳ chỉnh cách chia nhóm với thresholds thay vì chỉ là tuyến tính.
                     </small>
                 </div>
                 <div class="form-group">
@@ -266,13 +282,22 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label for="valueThresholds">Ngưỡng giá trị để phân nhóm</label>
-                    <input type="text" class="form-control" id="valueThresholds" v-model="inputValueThresholds">
+                    <label for="valueFormat">Tuỳ chỉnh cách hiển thị số liệu</label>
+                    <input type="text" class="form-control" id="valueFormat" v-model="valueFormat">
                     <small class="form-text text-muted">
-                        Tuỳ chỉnh cách chia nhóm với thresholds thay vì chỉ là tuyến tính.
+                        Theo cú pháp của
+                        <a href="https://github.com/d3/d3-format/blob/master/README.md#locale_format">D3 format</a>.
+                        Ví dụ <code>,.1f</code> cho số thực, <code>,d</code> cho số nguyên, <code>,.1%</code> cho tỷ lệ
+                        phần trăm,...
                     </small>
                 </div>
             </form>
+            <hr>
+            <footer>
+                <small class="text-muted">
+                    Made by <a href="https://thisisbinh.me/">Binh Le</a> 🏳️‍🌈
+                </small>
+            </footer>
         </div>
     </div>
 </div>

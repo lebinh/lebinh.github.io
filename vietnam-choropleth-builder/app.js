@@ -21,7 +21,7 @@ const vegaOpts = {
     defaultStyle: true,
     renderer: 'svg',
     actions: {source: false, editor: false},
-    scaleFactor: 4,
+    scaleFactor: 2,
     tooltip: {theme: 'custom'}
 };
 
@@ -153,7 +153,7 @@ const app = new Vue({
                 titleFontWeight: 'normal',
                 format: this.valueFormat,
                 gradientLength: this.mapWidth / 3,
-                offset: -this.mapWidth / 4,
+                offset: -this.mapWidth / 3,
                 padding: 50,
                 gradientThickness: 8,
                 labelFont: "'Fira Sans Extra Condensed', 'Helvetica Neue', sans-serif",
@@ -268,7 +268,8 @@ const app = new Vue({
             }
         },
         saveAsPng: function () {
-            this.view.toImageURL('png').then(function(url) {
+            const scaleFactor = 2;
+            this.view.toImageURL('png', scaleFactor).then(function(url) {
                 const link = document.createElement('a');
                 link.setAttribute('href', url);
                 link.setAttribute('target', '_blank');
