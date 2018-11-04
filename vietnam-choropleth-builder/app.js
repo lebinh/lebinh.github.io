@@ -20,7 +20,7 @@ function simplify(text) {
 const vegaOpts = {
     defaultStyle: true,
     renderer: 'svg',
-    actions: {source: false, editor: false},
+    actions: false,
     scaleFactor: 2,
     tooltip: {theme: 'custom'}
 };
@@ -267,13 +267,7 @@ const app = new Vue({
             }
         },
         saveAsPng: function () {
-            let scaleFactor = 1;
-            if (this.mapWidth < 1000) {
-                scaleFactor = 4;
-            } else if (this.mapWidth < 2000) {
-                scaleFactor = 2;
-            }
-
+            const scaleFactor = 2000/this.mapWidth;
             this.view.toImageURL('png', scaleFactor).then(function (url) {
                 const link = document.createElement('a');
                 link.setAttribute('href', url);
