@@ -5,13 +5,25 @@
     <link>https://thisisbinh.me/</link>
     <description>Recent content in Home on Hi, this is Binh.</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 09 Oct 2018 18:56:49 +0700</lastBuildDate>
+    <lastBuildDate>Sun, 04 Nov 2018 23:59:00 +1100</lastBuildDate>
     
 	<atom:link href="https://thisisbinh.me/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Bản đồ mật đồ dân số Việt Nam</title>
+      <title>Vietnam Choropleth Map Builder</title>
+      <link>https://thisisbinh.me/posts/vietnam-choropleth-map-builder/</link>
+      <pubDate>Sun, 04 Nov 2018 23:59:00 +1100</pubDate>
+      
+      <guid>https://thisisbinh.me/posts/vietnam-choropleth-map-builder/</guid>
+      <description>Nói ngắn gọn là mình đã tạo một công cụ để vẽ bản đồ choropleth của Việt Nam ở đây — https://thisisbinh.me/vietnam-choropleth-builder/
+Đọc tiếp để xem một vài ví dụ được tạo bằng công cụ này hoặc click liên kết trên và bắt tay vào tạo một bản đồ theo ý bạn.
+
+Tất cả bản đồ trong bài này đều dẫn tới trang tạo ra nó cùng dữ liệu và cấu hình.</description>
+    </item>
+    
+    <item>
+      <title>Bản đồ mật độ dân số Việt Nam</title>
       <link>https://thisisbinh.me/posts/vietnam-choropleth-map/</link>
       <pubDate>Tue, 09 Oct 2018 18:56:49 +0700</pubDate>
       

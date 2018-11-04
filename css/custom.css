@@ -1,8 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed|Vollkorn');
+
 html, body {
   font-family: 'Vollkorn', serif;
   font-size: 20px;
   line-height: 1.45;
+}
+
+@media (max-width: 576px) {
+  html, body {
+    font-size: 16px;
+  }
 }
 
 code, pre, kbd, samp, var {
@@ -12,6 +19,18 @@ code, pre, kbd, samp, var {
 
 .title, h1, h2, h3, h4, h5, h6 {
   font-family: 'Fira Sans Extra Condensed', sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+h3 {
+  font-size: 1.1rem;
 }
 
 blockquote {
@@ -30,6 +49,10 @@ blockquote {
 
 .entry-content a:hover {
   background-color: #ffdacc;
+}
+
+a img:hover {
+  background-color: none;
 }
 
 .list .item time {
