@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <title>Vietnam Choropleth Map Generator</title>
-
+    <title>Vietnam Choropleth Map Builder</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto|Fira+Sans+Extra+Condensed" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -15,9 +13,11 @@
             font-family: "Roboto", "Helvetica Neue", sans-serif;
             font-size: 15px;
         }
+
         h3 {
             font-family: "Fira Sans Extra Condensed", "Helvetica Neue", sans-serif;
         }
+
         .vg-tooltip.custom-theme {
             font-family: "Roboto", "Helvetica Neue", sans-serif !important;
             font-size: 14px !important;
@@ -74,8 +74,10 @@
                               placeholder="Tên tỉnh thành, giá trị"></textarea>
                     <small class="form-text text-muted" v-if="this.parsedData.length > 0">
                         <code>{{ parsedData.length - unmatchedNames.length }}</code>
-                        tỉnh thành có dữ liệu<span v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">,</span>
-                        <template v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">
+                        tỉnh thành có dữ liệu<span
+                            v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">,</span>
+                        <template
+                                v-if="(parsedData.length - unmatchedNames.length < 63) && (unmatchedNames.length > 0)">
                             <code>{{ unmatchedNames.length }}</code> tên không nhận ra: {{ unmatchedNames }}
                         </template>
                     </small>

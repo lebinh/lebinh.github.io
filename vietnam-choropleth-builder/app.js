@@ -163,14 +163,13 @@ const app = new Vue({
         },
         mapWidth: function () {
             if (window.innerWidth < 700) {
-                return 320;
+                return window.innerWidth * 0.8;
             }
             return window.innerWidth * 0.5;
         },
         vegaLiteSpec: function () {
             return {
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
-                autosize: 'fit',
                 title: {
                     text: this.title,
                     font: "'Fira Sans Extra Condensed', 'Helvetica Neue', sans-serif",
@@ -268,14 +267,20 @@ const app = new Vue({
             }
         },
         saveAsPng: function () {
-            const scaleFactor = 2;
-            this.view.toImageURL('png', scaleFactor).then(function(url) {
+            let scaleFactor = 1;
+            if (this.mapWidth < 1000) {
+                scaleFactor = 4;
+            } else if (this.mapWidth < 2000) {
+                scaleFactor = 2;
+            }
+
+            this.view.toImageURL('png', scaleFactor).then(function (url) {
                 const link = document.createElement('a');
                 link.setAttribute('href', url);
                 link.setAttribute('target', '_blank');
                 link.setAttribute('download', 'ban-do.png');
                 link.dispatchEvent(new MouseEvent('click'));
-            }).catch(function(error) {
+            }).catch(function (error) {
                 /* error handling */
             });
         }
